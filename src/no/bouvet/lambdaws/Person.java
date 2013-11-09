@@ -8,7 +8,7 @@ public interface Person {
 	
 	String getName();
 	
-	int getAge();
+	Integer getAge();
 	
 	Gender getGender();
 

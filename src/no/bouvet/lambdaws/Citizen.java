@@ -16,7 +16,7 @@ public class Citizen implements Person {
 	}
 	
 	@Override
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 	
