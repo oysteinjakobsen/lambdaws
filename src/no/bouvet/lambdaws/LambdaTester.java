@@ -2,13 +2,9 @@ package no.bouvet.lambdaws;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 public class LambdaTester {
 
@@ -42,6 +38,9 @@ public class LambdaTester {
 
     @Test
     public void countAdultMen() {
+
+        //Hint: Sjekk ut isAdult()-metoden på Citizen
+
         long count = population.stream()
                 .filter(Citizen::isAdult)
                 .filter(c -> c.getGender() == Person.Gender.MALE)
@@ -64,5 +63,34 @@ public class LambdaTester {
                 .collect(toList());
 
         list.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void findNameStartingWithJ() {
+        //Finn navnet på en vilkårlig person som har navn som starter på J
+
+        Optional<String> any = population.stream()
+                .map(Citizen::getName)
+                .filter(p -> p.startsWith("J"))
+                .findAny();
+
+        System.out.println(any.orElse("Fant ingen"));
+    }
+
+    @Test
+    public void countPopulationByCity(){
+        Map<City, Long> collect = population.stream()
+                .collect(groupingBy(Person::getCity, counting()));
+
+        collect.forEach((p,e) -> System.out.println(p.getName() + " " + e));
+
+    }
+
+    @Test
+    public void namesByCity(){
+        Map<City, List<String>> map = population.stream()
+                .collect(groupingBy(Person::getCity, mapping(Person::getName, toList())));
+
+        map.forEach((p, e) -> System.out.println(p.getName() + " " + e));
     }
 }
