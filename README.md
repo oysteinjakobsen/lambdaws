@@ -27,3 +27,8 @@ Før workshopen må du sette opp noen ting.
     * La alle standardinstillinger stå, velg Next alle steder
     * Når prosjektet er importert, høyreklikk på prosjektet, velg *Open module settings* > *Project*. 
 Velg java 8 under *Project language level* (og sjekk at java 8 er valgt under *Project SDK*)
+
+Nyttige linker
+---------------
+
+jdk 8 API: http://download.java.net/jdk8/docs/api/
