@@ -23,5 +23,7 @@ Før workshopen må du sette opp noen ting.
     eller hvis du ikke er så stødig på git kan du også laste ned koden som en zipfil
 4. **Importer prosjektet i IntelliJ**
     
-    File > Import Project > Velg *lambdaws* > OK
-    Høyreklikk på prosjektet, velg *Open module settings* > *Project*. Velg java 8 under *Project SDK* og *Project language level*
+    * File > Import Project > Velg *lambdaws* > OK
+    * La alle standardinstillinger stå, velg Next alle steder
+    * Når prosjektet er importert, høyreklikk på prosjektet, velg *Open module settings* > *Project*. 
+Velg java 8 under *Project language level* (og sjekk at java 8 er valgt under *Project SDK*)
