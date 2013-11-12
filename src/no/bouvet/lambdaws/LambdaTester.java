@@ -43,6 +43,13 @@ public class LambdaTester {
     }
 
     @Test
+    public void upperCaseNames(){
+
+        //OPPGAVE: Skriv ut alle navn i UPPER CASE
+
+    }
+
+    @Test
     public void countAdultMen() {
 
         //OPPGAVE: Hvor mange menn over 18 år er det?
@@ -85,6 +92,26 @@ public class LambdaTester {
     }
 
     @Test
+    public void allUniqueAges() {
+
+        //OPPGAVE: Finn alle unike aldre
+    }
+
+    @Test
+    public void averageAge(){
+
+        //OPPGAVE: Hva er gjennomsnittsalderen?
+
+    }
+
+    @Test
+    public void averageNumberOfAdultWomenInEachCity(){
+
+        //OPPGAVE: Hva er gjennomsnittlig antall voksne kvinner i hver by?
+
+    }
+
+    @Test
     public void countPopulationByCity(){
 
         //OPPGAVE: Finn ut hvor mange det bor i hver by (lag en Map<City, Long> som inneholder informasjonen)
@@ -105,5 +132,12 @@ public class LambdaTester {
                 .collect(groupingBy(Person::getCity, mapping(Person::getName, toList())));
 
         map.forEach((p, e) -> System.out.println(p.getName() + " " + e));
+    }
+
+    @Test
+    public void mostPopularAge(){
+
+        //OPPGAVE: Finn ut hvilken alder som forekommer flest ganger
+
     }
 }
