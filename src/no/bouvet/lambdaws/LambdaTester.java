@@ -22,7 +22,9 @@ public class LambdaTester {
 
     @Test
     public void printAllPersons() {
-        //Skriv ut alle personer i population-lista
+
+        //OPPGAVE: Skriv ut alle personer
+
         population.stream()
                 .forEach(System.out::println);
 
@@ -30,6 +32,10 @@ public class LambdaTester {
 
     @Test
     public void printAllAdultMen() {
+
+        //OPPGAVE: Skriv ut alle menn over 18
+        //Hint: Person har en isAdult()-metode
+
         population.stream()
                 .filter(c -> c.isAdult())
                 .filter(c -> c.getGender() == Person.Gender.MALE)
@@ -39,7 +45,7 @@ public class LambdaTester {
     @Test
     public void countAdultMen() {
 
-        //Hint: Sjekk ut isAdult()-metoden på Citizen
+        //OPPGAVE: Hvor mange menn over 18 år er det?
 
         long count = population.stream()
                 .filter(Citizen::isAdult)
@@ -51,12 +57,12 @@ public class LambdaTester {
 
     @Test
     public void sortByAge() {
-        //Lag en liste som er sortert stigende etter alder
 
-        //Vi kan bruke Collections.sort eller population.sort, men disse vil sortere population-listen
+        //OPPGAVE: Lag en liste (List<Citizen>) som er sortert stigende etter alder
+
+        //Vi kan bruke Collections.sort eller population.sort, men disse vil sortere kilde-listen
         //Collections.sort(population, (p1, p2) -> p1.getAge().compareTo(p2.getAge()));
         //population.sort((p1, p2) -> p1.getAge().compareTo(p2.getAge()));
-        //population.forEach(System.out::println);
 
         List<Citizen> list =  population.stream()
                 .sorted((p1, p2) -> p1.getAge().compareTo(p2.getAge()))
@@ -67,7 +73,8 @@ public class LambdaTester {
 
     @Test
     public void findNameStartingWithJ() {
-        //Finn navnet på en vilkårlig person som har navn som starter på J
+
+        //OPPGAVE: Finn navnet på en vilkårlig person som har navn som starter på J
 
         Optional<String> any = population.stream()
                 .map(Citizen::getName)
@@ -79,6 +86,9 @@ public class LambdaTester {
 
     @Test
     public void countPopulationByCity(){
+
+        //OPPGAVE: Finn ut hvor mange det bor i hver by (lag en Map<City, Long> som inneholder informasjonen)
+
         Map<City, Long> collect = population.stream()
                 .collect(groupingBy(Person::getCity, counting()));
 
@@ -88,6 +98,9 @@ public class LambdaTester {
 
     @Test
     public void namesByCity(){
+
+        //OPPGAVE: Lag en Map<City, List<String>> som inneholder alle byene og navnet til alle som bor i de respektive byene
+
         Map<City, List<String>> map = population.stream()
                 .collect(groupingBy(Person::getCity, mapping(Person::getName, toList())));
 
