@@ -24,7 +24,7 @@ Før workshopen må du sette opp noen ting.
 4. **Importer prosjektet i IntelliJ**
     
     * File > Import Project > Velg *lambdaws* > OK
-    * La alle standardinstillinger stå, velg Next alle steder
+    * Bruk disse instillingene i wizarden: Create project from existing sources, SDK 8 
     * Når prosjektet er importert, høyreklikk på prosjektet, velg *Open module settings* > *Project*. 
 Velg java 8 under *Project language level* (og sjekk at java 8 er valgt under *Project SDK*)
 
