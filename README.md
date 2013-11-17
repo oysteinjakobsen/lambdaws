@@ -31,4 +31,5 @@ Nyttige linker
 ---------------
 
 jdk 8 API: http://download.java.net/jdk8/docs/api/
+
 Lambda faq: http://www.lambdafaq.org/
