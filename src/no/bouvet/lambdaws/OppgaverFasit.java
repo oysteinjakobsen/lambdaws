@@ -3,10 +3,11 @@ package no.bouvet.lambdaws;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
-public class LambdaTester {
+public class OppgaverFasit {
 
     City sanFransico = new City("San Francisco", 4335391);
     City newYork = new City("New York City", 18897109);
@@ -18,7 +19,8 @@ public class LambdaTester {
             new Citizen("Juliet", 18, Person.Gender.FEMALE, sanFransico),
             new Citizen("Barack", 52, Person.Gender.MALE, newYork),
             new Citizen("John", 25, Person.Gender.MALE, washingtonDC),
-            new Citizen("Crystle", 12, Person.Gender.FEMALE, boston)));
+            new Citizen("Crystle", 12, Person.Gender.FEMALE, boston),
+            new Citizen("Bill", 18, Person.Gender.MALE, boston)));
 
     @Test
     public void printAllPersons() {
@@ -47,6 +49,11 @@ public class LambdaTester {
 
         //OPPGAVE: Skriv ut alle navn i UPPER CASE
 
+        population.stream()
+                .map(Person::getName)
+                .map(p -> p.toUpperCase())
+                .forEach(System.out::println);
+
     }
 
     @Test
@@ -72,11 +79,14 @@ public class LambdaTester {
         //population.sort((p1, p2) -> p1.getAge().compareTo(p2.getAge()));
 
         List<Citizen> list =  population.stream()
-                .sorted((p1, p2) -> p1.getAge().compareTo(p2.getAge()))
+                .sorted(stigendeAlder)
                 .collect(toList());
 
         list.stream().forEach(System.out::println);
     }
+
+    Comparator<Person> stigendeAlder = (a, b) -> Integer.compare(
+            a.getAge(), b.getAge());
 
     @Test
     public void findNameStartingWithJ() {
@@ -95,6 +105,13 @@ public class LambdaTester {
     public void allUniqueAges() {
 
         //OPPGAVE: Finn alle unike aldre
+
+        Set<Integer> uniqueAges = population.stream()
+                .map(Person::getAge)
+                .collect(toSet());
+
+        uniqueAges.forEach(System.out::println);
+
     }
 
     @Test
@@ -102,13 +119,24 @@ public class LambdaTester {
 
         //OPPGAVE: Hva er gjennomsnittsalderen?
 
+        OptionalDouble averageAge = population.stream()
+                .mapToInt(Person::getAge)
+                .average();
+
+        System.out.println(averageAge);
+
     }
 
     @Test
-    public void averageNumberOfAdultWomenInEachCity(){
+    public void averageAgeForThoseUnder40(){
 
-        //OPPGAVE: Hva er gjennomsnittlig antall voksne kvinner i hver by?
+        //OPPGAVE: Finn gjennomsnittsalderen for alle innbyggerne under 40
 
+        OptionalDouble averageAge = population.stream()
+                .mapToInt(Person::getAge)
+                .filter(p -> p < 40).average();
+
+        System.out.println(averageAge);
     }
 
     @Test
@@ -138,6 +166,14 @@ public class LambdaTester {
     public void mostPopularAge(){
 
         //OPPGAVE: Finn ut hvilken alder som forekommer flest ganger
+
+        Map<Integer, Long> map = population.stream()
+                .collect(groupingBy(Person::getAge, counting()));
+
+        map.entrySet().stream()
+                .max(Map.Entry.<Integer, Long>comparingByValue())
+                .map(e -> e.getKey())
+                .ifPresent(System.out::println);
 
     }
 }
