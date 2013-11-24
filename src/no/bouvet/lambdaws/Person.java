@@ -4,7 +4,7 @@ public interface Person {
 
 	public static enum Gender {
 		MALE, FEMALE
-	};
+	}
 	
 	String getName();
 	

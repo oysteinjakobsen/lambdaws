@@ -1,24 +1,24 @@
 package no.bouvet.lambdaws;
 
-public class City {
-    private String name;
+import java.util.Arrays;
+import java.util.List;
+
+
+public enum City {
+    Boston(4590000L), SanFrancisco(4335391L), NewYork(18897109L), WashingtonDC(5703948L);
     private long population;
 
-    public City(String name, long population) {
-        this.name = name;
-        this.population = population;
-    }
+    City(long population) {
 
-    public String getName() {
-        return name;
+        this.population = population;
     }
 
     public long getPopulation() {
         return population;
     }
 
-    @Override
-    public String toString() {
-        return name + '(' + population + ')';
+    public static List<City> asList() {
+        return Arrays.asList(values());
     }
+
 }

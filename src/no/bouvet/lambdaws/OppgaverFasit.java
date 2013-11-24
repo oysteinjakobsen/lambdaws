@@ -3,24 +3,19 @@ package no.bouvet.lambdaws;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
+import static no.bouvet.lambdaws.City.*;
 
 public class OppgaverFasit {
 
-    City sanFransico = new City("San Francisco", 4335391);
-    City newYork = new City("New York City", 18897109);
-    City boston = new City("Boston", 4590000);
-    City washingtonDC = new City("Washington DC", 5703948);
-
     List<Citizen> population = new ArrayList<>(Arrays.asList(
-            new Citizen("Samuel", 17, Person.Gender.MALE, sanFransico),
-            new Citizen("Juliet", 18, Person.Gender.FEMALE, sanFransico),
-            new Citizen("Barack", 52, Person.Gender.MALE, newYork),
-            new Citizen("John", 25, Person.Gender.MALE, washingtonDC),
-            new Citizen("Crystle", 12, Person.Gender.FEMALE, boston),
-            new Citizen("Bill", 18, Person.Gender.MALE, boston)));
+            new Citizen("Samuel", 17, Person.Gender.MALE, SanFrancisco),
+            new Citizen("Juliet", 18, Person.Gender.FEMALE, SanFrancisco),
+            new Citizen("Barack", 52, Person.Gender.MALE, NewYork),
+            new Citizen("John", 25, Person.Gender.MALE, WashingtonDC),
+            new Citizen("Crystle", 12, Person.Gender.FEMALE, Boston),
+            new Citizen("Bill", 18, Person.Gender.MALE, Boston)));
 
     @Test
     public void printAllPersons() {
@@ -123,43 +118,43 @@ public class OppgaverFasit {
                 .mapToInt(Person::getAge)
                 .average();
 
-        System.out.println(averageAge);
+        averageAge.ifPresent(System.out::println);
 
     }
 
     @Test
     public void averageAgeForThoseUnder40(){
 
-        //OPPGAVE: Finn gjennomsnittsalderen for alle innbyggerne under 40
+        //OPPGAVE: Finn gjennomsnittsalderen for alle under 40
 
         OptionalDouble averageAge = population.stream()
                 .mapToInt(Person::getAge)
                 .filter(p -> p < 40).average();
 
-        System.out.println(averageAge);
+        averageAge.ifPresent(System.out::println);
     }
 
     @Test
-    public void countPopulationByCity(){
+    public void countByGender(){
 
-        //OPPGAVE: Finn ut hvor mange det bor i hver by (lag en Map<City, Long> som inneholder informasjonen)
+        //OPPGAVE: Finn ut hvor mange det er av hvert kjønn (lag en Map<Gender, Long> som inneholder informasjonen)
 
-        Map<City, Long> collect = population.stream()
-                .collect(groupingBy(Person::getCity, counting()));
+        Map<Person.Gender, Long> collect = population.stream()
+                .collect(groupingBy(Person::getGender, counting()));
 
-        collect.forEach((p,e) -> System.out.println(p.getName() + " " + e));
+        collect.forEach((p,e) -> System.out.println(p + " " + e));
 
     }
 
     @Test
     public void namesByCity(){
 
-        //OPPGAVE: Lag en Map<City, List<String>> som inneholder alle byene og navnet til alle som bor i de respektive byene
+        //OPPGAVE: Lag en Map<City, List<String>> som inneholder alle byene og navnet til de som bor i de respektive byene
 
         Map<City, List<String>> map = population.stream()
                 .collect(groupingBy(Person::getCity, mapping(Person::getName, toList())));
 
-        map.forEach((p, e) -> System.out.println(p.getName() + " " + e));
+        map.forEach((p, e) -> System.out.println(p + " " + e));
     }
 
     @Test
@@ -175,5 +170,65 @@ public class OppgaverFasit {
                 .map(e -> e.getKey())
                 .ifPresent(System.out::println);
 
+    }
+
+    @Test
+    public void totalPopulationInAllCities(){
+
+        //OPPGAVE: Finn ut hvor mange det bor i alle byene tilsammen (bruk city.getPopulation() for å finne ut hvor mange det bor i en by)
+        //Du kan benytte City.asList() for å få tak i alle byene
+
+        Long totalPopulation = City.asList().stream()
+                .mapToLong(City::getPopulation)
+                .sum();
+
+        //Evt:
+
+        Long totalPopulationByReduce = City.asList().stream()
+                .map(City::getPopulation)
+                .reduce(0l, (x, y) -> x + y);
+
+        System.out.println(totalPopulation);
+        System.out.println(totalPopulationByReduce);
+    }
+
+    @Test
+    public void findHighestTemperatureBelow10Degrees() {
+
+        //OPPGAVE: Finn den høyeste temperaturen under 10grader som er målt i alle byene i dag. Finn den raskeste måten å gjøre det på.
+        //Du kan benytte City.asList() for å få tak i alle byene, og WeatherService.getTodaysTemperatureForCity() for å få tak i dagens temperatur for én by
+
+
+        //Sekvensiell:
+        long start = System.nanoTime();
+        Double highestTemperatureBelow10Degrees = City.asList()
+                .stream()
+                .map(WeatherService::getTodaysTemperatureForCity)
+                .filter(t -> t < 10.0)
+                .reduce(0.0, OppgaverFasit::pickHigh);
+
+        long end = System.nanoTime();
+        System.out.println("Highest temperature over 10.0: " + highestTemperatureBelow10Degrees);
+        System.out.println("Time: " + (end - start)/1.0e9);
+
+        //Parallell:
+        long startParallel = System.nanoTime();
+        highestTemperatureBelow10Degrees = City.asList()
+                .parallelStream()
+                .map(WeatherService::getTodaysTemperatureForCity)
+                .filter(t -> t < 10.0)
+                .reduce(0.0, OppgaverFasit::pickHigh);
+
+        long endParallel = System.nanoTime();
+        System.out.println("Highest temperature over 10.0: " + highestTemperatureBelow10Degrees);
+        System.out.println("Parallel Time: " + (endParallel - startParallel)/1.0e9);
+
+    }
+
+
+    private static double pickHigh(
+            final double temperature1, final double temperature2) {
+
+        return temperature1 > temperature2 ? temperature1 : temperature2;
     }
 }
