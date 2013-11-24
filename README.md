@@ -21,7 +21,7 @@ Før workshopen må du sette opp noen ting.
     Bruk enten git `git clone https://github.com/oysteinjakobsen/lambdaws`
 
     eller hvis du ikke er så stødig på git kan du også laste ned koden som en zipfil: 
-    https://github.com/oysteinjakobsen/lambdaws/blob/master/lambdaws.zip
+    https://github.com/oysteinjakobsen/lambdaws/raw/master/lambdaws.zip
 4. **Importer prosjektet i IntelliJ**
     
     * File > Import Project > Velg *lambdaws* > OK (Bruk standardinstillinger, men sjekk at disse er valgt: Create project from existing sources, SDK 8)
