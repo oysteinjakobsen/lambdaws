@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 
 public class Anagrams {
 
-    private static final class Word {
+    private static class Word {
         private String word;
 
         public Word(String word) {
@@ -30,20 +30,24 @@ public class Anagrams {
         }
     }
 
-    private static final String[] WORDS = new String[]{"Sol", "Rørt", "Tørr", "Los", "Gul", "Trør"};
+    private static final String[] WORDS =
+            new String[] {"Sol", "Rørt", "Tørr", "Los", "Gul", "Trør"};
 
     public static void main(String... args) {
-        Map<String, List<Word>> wordsGroupedByKey = Stream.of(WORDS)
-                .map(Word::new)
-                .collect(groupingBy(Word::getKey));
+        Map<String, List<Word>> wordsGroupedByKey =
+                Stream.of(WORDS)
+                        .map(Word::new)
+                        .collect(groupingBy(Word::getKey));
 
-        Predicate<List<Word>> listHasMoreThanOneWord = wordList -> wordList.size() > 1;
+        Predicate<List<Word>> listHasMultipleWords =
+                wordList -> wordList.size() > 1;
 
-        List<String> anagrams = wordsGroupedByKey.entrySet().stream()
-                .map(entryToListOfWords())
-                .filter(listHasMoreThanOneWord)
-                .map(Anagrams::wordListToCommaSeparatedString)
-                .collect(toList());
+        List<String> anagrams =
+                wordsGroupedByKey.entrySet().stream()
+                        .map(entryToListOfWords())
+                        .filter(listHasMultipleWords)
+                        .map(Anagrams::wordListToCommaSeparatedString)
+                        .collect(toList());
 
         anagrams.forEach(System.out::println);
     }
