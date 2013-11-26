@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 public class Apples {
     private static final class Apple {
@@ -26,6 +27,10 @@ public class Apples {
 
         public double getPrice() {
             return price;
+        }
+
+        public String toString() {
+            return color + " " + price;
         }
     }
 
@@ -94,6 +99,12 @@ public class Apples {
                 .sum();
     }
 
+    private static Predicate<Apple> expensiveApples(double price) {
+        double threshold = Double.min(price, 10.0);
+
+        return apple -> apple.getPrice() > threshold;
+    }
+
     public static void main(String... args) {
 
         List<Apple> listOfApples = Arrays.asList(
@@ -110,6 +121,11 @@ public class Apples {
         System.out.println(priceOfRedApplesUsingLambdaDoubleStream(listOfApples));
 
         listOfApples.sort(comparing(Apple::getPrice));
-        listOfApples.forEach(apple -> System.out.println(apple.getPrice()));
+        listOfApples.forEach(apple -> System.out.println(apple));
+
+        listOfApples.stream()
+                .filter(expensiveApples(5.0))
+                .collect(toList())
+                .forEach(System.out::println);
     }
 }
